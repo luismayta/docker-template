@@ -1,4 +1,4 @@
-<!-- Space: BASE-TEMPLATE -->
+<!-- Space: DOCKER-TEMPLATE -->
 <!-- Title: FAQ -->
 
 # Faq

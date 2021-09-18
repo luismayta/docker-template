@@ -8,6 +8,7 @@ includes:
   version: ./provision/task/version.yml
   docker: ./provision/task/docker.yml
   changelog: ./provision/task/changelog.yml
+  sonar: ./provision/task/sonar.yml
 
 env:
   DOCKER:
@@ -15,7 +16,7 @@ env:
   PYTHON:
     sh: python --version
   APP_TAG:
-    sh: git describe --tags $(git rev-list --tags --max-count=1) || echo "0.0.0"
+    sh: git describe --tags $(git rev-list --tags --max-count=1) 2> /dev/null || echo "0.0.0"
   README_YAML: provision/generators/README.yaml
   README_TEMPLATE: provision/templates/README.tpl.md
   README_INCLUDES: file://
@@ -24,7 +25,7 @@ dotenv:
   - .env
 
 vars:
-  PROJECT_NAME: base-template
+  PROJECT_NAME: docker-template
   ORGANIZATION: hadenlabs
   REVIEWERS: luismayta
   PYTHON_VERSION: 3.9.2
@@ -33,6 +34,7 @@ vars:
   GIT_IGNORES_CUSTOM: >-
     bin
     TMP_CHANGELOG.md
+    .task
 
 tasks:
   default:
@@ -43,6 +45,7 @@ tasks:
         silent: true
       - task: version:default
       - task: summary
+      - cmd: task -l
     silent: true
 
   summary:
@@ -70,6 +73,17 @@ tasks:
         --out {{.README_FILE}}
         --datasource config={{.README_YAML}}
         --datasource includes={{.README_INCLUDES}}
+
+  prettier:
+    run: once
+    desc: Execute prettier files
+    cmds:
+      - >-
+        prettier --config=.github/linters/prettier.config.js
+        --ignore-path=.github/linters/.prettierignore
+        '**/*.{js?(on),ts?(x),scss,md,y?(a)ml,gql,graphql?(s),less,mjml}'
+        --write=true
+        --list-different
 
   setup:
     desc: Setup dependences of project

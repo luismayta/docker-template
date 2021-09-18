@@ -1,11 +1,11 @@
-<!-- Space: BASE-TEMPLATE -->
+<!-- Space: DOCKER-TEMPLATE -->
 <!-- Title: Releasing -->
 
 # Releasing
 
 ## Bump a new version
 
-Make a new version of base-template in the following steps:
+Make a new version of docker-template in the following steps:
 
 - Make sure everything is commit to github.com.
 - Update `CHANGELOG.md` with the next version.

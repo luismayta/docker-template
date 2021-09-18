@@ -1,4 +1,4 @@
-<!-- Space: BASE-TEMPLATE -->
+<!-- Space: DOCKER-TEMPLATE -->
 <!-- Title: Code Of Conduct -->
 
 # Contributor Covenant Code of Conduct
