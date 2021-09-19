@@ -10,6 +10,9 @@ includes:
   docker: ./provision/task/docker.yml
   changelog: ./provision/task/changelog.yml
   sonar: ./provision/task/sonar.yml
+  images:
+    taskfile: ./images/Taskfile.yml
+    dir: ./images
 
 env:
   DOCKER:
@@ -29,7 +32,9 @@ vars:
   PROJECT_NAME: docker-template
   ORGANIZATION: hadenlabs
   DOCKER_ORGANIZATION: hadenlabs
+  DOCKER_PLATFORMS: linux/amd64,linux/arm/v7,linux/arm64/v8
   DOCKER_IMAGE_NAME: docker-template
+  DOCKER_TAG: 0.0.0
   REVIEWERS: luismayta
   PYTHON_VERSION: 3.9.2
   GIT_IGNORES: python,node,go,zsh
@@ -102,3 +107,17 @@ tasks:
     desc: Setup environment of project
     cmds:
       - task: python:environment
+
+  build:docker:
+    run: once
+    desc: Build docker Image.
+    cmds:
+      - task: images:build
+
+  push:docker:
+    run: once
+    desc: Push docker Image.
+    deps:
+      - build:docker
+    cmds:
+      - task: images:publish
