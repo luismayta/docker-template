@@ -3,6 +3,7 @@ version: '3'
 includes:
   python: ./provision/task/python.yml
   git: ./provision/task/git.yml
+  go: ./provision/task/go.yml
   docs: ./provision/task/docs.yml
   gitflow: ./provision/task/gitflow.yml
   version: ./provision/task/version.yml
@@ -27,6 +28,8 @@ dotenv:
 vars:
   PROJECT_NAME: docker-template
   ORGANIZATION: hadenlabs
+  DOCKER_ORGANIZATION: hadenlabs
+  DOCKER_IMAGE_NAME: docker-template
   REVIEWERS: luismayta
   PYTHON_VERSION: 3.9.2
   GIT_IGNORES: python,node,go,zsh
@@ -60,6 +63,7 @@ tasks:
       - python:check
       - changelog:check
       - git:check
+      - go:check
       - gitflow:check
       - docs:check
 
@@ -91,6 +95,7 @@ tasks:
       - task: python:setup
       - task: python:precommit
       - task: git:setup
+      - task: go:setup
       - task: gitflow:setup
 
   environment:
