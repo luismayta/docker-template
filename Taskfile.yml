@@ -1,14 +1,16 @@
 version: '3'
 
 includes:
+  changelog: ./provision/task/changelog.yml
   python: ./provision/task/python.yml
   git: ./provision/task/git.yml
   go: ./provision/task/go.yml
   docs: ./provision/task/docs.yml
+  docker: ./provision/task/docker.yml
   gitflow: ./provision/task/gitflow.yml
   version: ./provision/task/version.yml
-  docker: ./provision/task/docker.yml
-  changelog: ./provision/task/changelog.yml
+  mark: ./provision/task/mark.yml
+  prettier: ./provision/task/prettier.yml
   sonar: ./provision/task/sonar.yml
   images:
     taskfile: ./images/Taskfile.yml
@@ -16,9 +18,13 @@ includes:
 
 env:
   DOCKER:
-    sh: docker -v
+    sh: docker --version 2> /dev/null || echo "not exist"
   PYTHON:
-    sh: python --version
+    sh: python --version 2> /dev/null || echo "not exist"
+  GO:
+    sh: go version 2> /dev/null || echo "not exist"
+  NODE:
+    sh: node --version 2> /dev/null || echo "not exist"
   APP_TAG:
     sh: git describe --tags $(git rev-list --tags --max-count=1) 2> /dev/null || echo "0.0.0"
   README_YAML: provision/generators/README.yaml
@@ -37,12 +43,17 @@ vars:
   DOCKER_TAG: 0.0.0
   REVIEWERS: luismayta
   PYTHON_VERSION: 3.9.2
-  GIT_IGNORES: python,node,go,zsh
+  NODE_VERSION: 14.16.1
+  GIT_IGNORES: python,node,go,zsh,sonar
+  GOLANGCI_VERSION: 1.42.0
   README_FILE: README.md
   GIT_IGNORES_CUSTOM: >-
     bin
+    .scannerwork
+    .secrets
     TMP_CHANGELOG.md
     .task
+    *.lock.hcl
 
 tasks:
   default:
@@ -59,7 +70,10 @@ tasks:
   summary:
     desc: 'Summary information'
     cmds:
+      - echo Go available {{.GO}}
+      - echo Python available {{.PYTHON}}
       - echo Docker available {{.DOCKER}}
+      - echo Node available {{.NODE}}
     silent: true
 
   check:
@@ -71,6 +85,7 @@ tasks:
       - go:check
       - gitflow:check
       - docs:check
+      - sonar:check
 
   readme:
     run: once
@@ -87,12 +102,7 @@ tasks:
     run: once
     desc: Execute prettier files
     cmds:
-      - >-
-        prettier --config=.github/linters/prettier.config.js
-        --ignore-path=.github/linters/.prettierignore
-        '**/*.{js?(on),ts?(x),scss,md,y?(a)ml,gql,graphql?(s),less,mjml}'
-        --write=true
-        --list-different
+      - task: prettier:all
 
   setup:
     desc: Setup dependences of project
