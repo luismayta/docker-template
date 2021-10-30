@@ -11,8 +11,8 @@ email:
   support: support@hadenlabs.com
 
 confluence:
-  space: DOCKER-TEMPLATE
-  title: readme
+  space: DockerTemplate
+  title: Project
 
 # Logo for this project
 #logo: docs/logo.png
@@ -45,6 +45,7 @@ requirements: |-
 
   This is a list of plugins that need to be installed previously to enjoy all the goodies of this configuration:
 
+  - [Pyenv](https://github.com/pyenv/pyenv)
   - [Docker](https://www.docker.com)
   - [python](https://www.python.org)
   - [taskfile](https://github.com/go-task/task)
