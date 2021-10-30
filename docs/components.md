@@ -1,11 +1,11 @@
 <!-- Space: DockerTemplate -->
 <!-- Parent: Project -->
-<!-- Title: Commands -->
+<!-- Title: Components -->
 
 <!-- Label: DockerTemplate -->
 <!-- Label: Project -->
-<!-- Label: Commands -->
+<!-- Label: Components -->
 <!-- Include: docs/disclaimer.md -->
 <!-- Include: ac:toc -->
 
-## Commands
+# components

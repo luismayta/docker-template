@@ -1,5 +1,12 @@
-<!-- Space: DOCKER-TEMPLATE -->
+<!-- Space: DockerTemplate -->
+<!-- Parent: Project -->
 <!-- Title: Releasing -->
+
+<!-- Label: DockerTemplate -->
+<!-- Label: Project -->
+<!-- Label: Releasing -->
+<!-- Include: docs/disclaimer.md -->
+<!-- Include: ac:toc -->
 
 # Releasing
 
