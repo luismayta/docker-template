@@ -1,5 +1,6 @@
-<!-- Space: DOCKER-TEMPLATE -->
-<!-- Title: Code Of Conduct -->
+<!-- Space: DockerTemplate -->
+<!-- Parent: Project -->
+<!-- Title: Code of Conduct -->
 
 # Contributor Covenant Code of Conduct
 
