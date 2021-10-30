@@ -1,5 +1,12 @@
-<!-- Space: DOCKER-TEMPLATE -->
+<!-- Space: DockerTemplate -->
+<!-- Parent: Project -->
 <!-- Title: Troubleshooting -->
+
+<!-- Label: DockerTemplate -->
+<!-- Label: Project -->
+<!-- Label: Troubleshooting -->
+<!-- Include: docs/disclaimer.md -->
+<!-- Include: ac:toc -->
 
 # Troubleshooting
 
