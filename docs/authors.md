@@ -1,7 +1,3 @@
-<!-- Space: DockerTemplate -->
-<!-- Parent: Project -->
-<!-- Title: Authors -->
-
 # Authors
 
 ## Leads

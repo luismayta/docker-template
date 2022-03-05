@@ -1,21 +1,12 @@
-name: confluence
+To use this action, make a file `.github/workflows/confluence.yml`. Here's a template to get started:
+
+```yaml
+name: confluence-sync
 
 on:
-  workflow_run:
-    workflows:
-      - lint-code
-    types:
-      - completed
-    branches:
-      - develop
-      - main
-
-    tags:
-      - '[0-9]+.[0-9]+.[0-9]+'
-      # https://semver.org/ proper release tags, more or less
-      - 'v[0-9]+.[0-9]+.[0-9]+'
-      # prerelease tags, more or less
-      - 'v[0-9]+.[0-9]+.[0-9]+-*'
+  pull_request:
+  push:
+    branches: [main]
 
 jobs:
   confluence:
@@ -39,7 +30,8 @@ jobs:
       - name: Sync confluence
         uses: hadenlabs/docker-template@0.1.0
         with:
+          confluence_base_url: '${{ secrets.CONFLUENCE_BASE_URL }}'
+          confluence_user: '${{ secrets.CONFLUENCE_USER }}'
+          confluence_token: '${{ secrets.CONFLUENCE_ACCESS_TOKEN }}'
           files: '${{ steps.changed-files.outputs.all_changed_files }}'
-          confluence_url: ${{ secrets.CONFLUENCE_BASE_URL }}
-          confluence_username: ${{ secrets.CONFLUENCE_USER }}
-          confluence_token: ${{ secrets.CONFLUENCE_ACCESS_TOKEN }}
+```
