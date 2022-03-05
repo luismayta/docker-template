@@ -1,6 +1,3 @@
- <!-- Space: DockerTemplate -->
-<!-- Title: Project -->
-
 <!--
 
 
@@ -15,26 +12,60 @@
 
   -->
 
-[![Latest Release](https://img.shields.io/github/release/hadenlabs/docker-template)](https://github.com/hadenlabs/docker-template/releases) [![Lint](https://img.shields.io/github/workflow/status/hadenlabs/docker-template/lint-code)](https://github.com/hadenlabs/docker-template/actions?workflow=lint-code) [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit) [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow)](https://conventionalcommits.org) [![KeepAChangelog](https://img.shields.io/badge/Keep%20A%20Changelog-1.0.0-%23E05735)](https://keepachangelog.com)
+[![Latest Release](https://img.shields.io/github/release/hadenlabs/docker-template)](https://github.com/hadenlabs/docker-template/releases) [![Lint](https://img.shields.io/github/workflow/status/hadenlabs/docker-template/lint-code)](https://github.com/hadenlabs/docker-template/actions) [![Issues](https://img.shields.io/github/issues/hadenlabs/docker-template)](https://github.com/hadenlabs/docker-template/issues) [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit) [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow)](https://conventionalcommits.org) [![KeepAChangelog](https://img.shields.io/badge/changelog-Keep%20a%20Changelog%20v1.0.0-orange)](https://keepachangelog.com)
 
 # docker-template
 
-docker-template for project
-
-### Replace name project to New Project
-
-```bash
-  agr 'docker-template' 'new-project'
-```
+Action confluence sync that can be used to publish markdown documents to confluence. This action is a thin wrapper around the mark See the action.yaml file for details of required inputs.
 
 ## Requirements
 
 This is a list of plugins that need to be installed previously to enjoy all the goodies of this configuration:
 
-- [Pyenv](https://github.com/pyenv/pyenv)
+- [gomplate](https://github.com/hairyhenderson/gomplate)
 - [Docker](https://www.docker.com)
 - [python](https://www.python.org)
 - [taskfile](https://github.com/go-task/task)
+
+## Usage
+
+To use this action, make a file `.github/workflows/confluence.yml`. Here's a template to get started:
+
+```yaml
+name: confluence-sync
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  confluence:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check out a copy of the repo
+        if: ${{ !env.ACT }}
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v17.1
+        with:
+          files: |
+            *.md
+          files_ignore: |
+            *.tpl.md
+
+      - name: Sync confluence
+        uses: hadenlabs/docker-template@0.1.0
+        with:
+          confluence_base_url: '${{ secrets.CONFLUENCE_BASE_URL }}'
+          confluence_user: '${{ secrets.CONFLUENCE_USER }}'
+          confluence_token: '${{ secrets.CONFLUENCE_ACCESS_TOKEN }}'
+          files: '${{ steps.changed-files.outputs.all_changed_files }}'
+```
 
 ## Help
 
@@ -44,22 +75,7 @@ File a GitHub [issue](https://github.com/hadenlabs/docker-template/issues).
 
 ## Contributing
 
-### Bug Reports & Feature Requests
-
-Please use the [issue tracker](https://github.com/hadenlabs/docker-template/issues) to report any bugs or file feature requests.
-
-### Development
-
-In general, PRs are welcome. We follow the typical "fork-and-pull" Git workflow.
-
-1.  **Fork** the repo on GitHub
-2.  **Clone** the project to your own machine
-3.  **Commit** changes to your own branch
-4.  **Push** your work back up to your fork
-
-5.  Submit a **Pull Request** so that we can review your changes
-
-**NOTE:** Be sure to rebase the latest changes from "upstream" before making a pull request!
+See [Contributing](./docs/contributing.md).
 
 ## Module Versioning
 
@@ -78,7 +94,7 @@ Using the given version number of `MAJOR.MINOR.PATCH`, we apply the following co
 
 ## Copyright
 
-Copyright © 2018-2021 [Hadenlabs](https://hadenlabs.com)
+Copyright © 2018-2022 [Hadenlabs](https://hadenlabs.com)
 
 ## Trademarks
 
